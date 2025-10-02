@@ -96,10 +96,10 @@ def get_single_species(species_id):
     species = Species.query.get(species_id)
     return jsonify(species.serialize())
 
-@api.route('planets/<int:planet_id>', methods=["GET"])
+@api.route('planets/<int:planet_id>', methods=["GET"]) # Taking information (planet_id)
 def get_single_planet(planet_id):
-    planet = Planet.query.get(planet_id)
-    return jsonify(planet.serialize())
+    planet = Planet.query.get(planet_id) # Using that information (find which planet the user wants to see by using the planet_id)
+    return jsonify(planet.serialize()) # Giving back what information is requested (we return that planet back to the user)
 
 @api.route('/signup', methods=["POST"])
 def create_new_user():
@@ -108,6 +108,8 @@ def create_new_user():
     new_user.email = body["email"]
     new_user.password = body["password"]
     new_user.is_active = True
+
+    if new_user.email is None:
 
     db.session.add(new_user)
     db.session.commit()
