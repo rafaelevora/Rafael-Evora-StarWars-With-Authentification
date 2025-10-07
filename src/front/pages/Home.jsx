@@ -1,14 +1,16 @@
 import React, { useEffect } from "react"
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import useActions from "../hooks/actions.js";
 
 export const Home = () => {
 
 	const { store, dispatch } = useGlobalReducer()
+	const { getCharacters, getPlanets, getSpecies } = useActions();
+	const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 	const loadMessage = async () => {
 		try {
-			const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
 
@@ -28,7 +30,21 @@ export const Home = () => {
 
 	}
 
+
+	
+
 	useEffect(() => {
+
+		if (store.characters.length === 0) {
+			getCharacters()
+		}
+		if (store.planets.length === 0) {
+			getPlanets()
+		}
+		if (store.species.length === 0) {
+			getSpecies()
+		}
+
 		loadMessage()
 	}, [])
 
@@ -47,6 +63,31 @@ export const Home = () => {
 					</span>
 				)}
 			</div>
+
+			<div>
+				{ store.characters.map((character) => (
+					<h1>{ character.name }</h1>
+				))}
+			</div>
+
+			<div>
+				{ store.planets.map((planet) => (
+					<>
+						<h2>{ planet.name }</h2>
+						<h3>Population: { planet.population }</h3>
+					</>
+				))}
+			</div>
+
+			<div>
+				{ store.species.map((species_name) => (
+					<>
+						<h2>{ species_name.name}</h2>
+						<h3>Language: { species_name.language }</h3>
+					</>
+				))}
+			</div>
+
 		</div>
 	);
 }; 
