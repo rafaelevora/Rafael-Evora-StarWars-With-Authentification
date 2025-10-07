@@ -25,7 +25,6 @@ def handle_hello():
 
 
 @api.route('/character', methods=["POST"])
-@jwt_required()
 def add_new_character():
     body = request.json     # getting (requesting) info from front end
 
@@ -33,8 +32,8 @@ def add_new_character():
     new_character.name = body["name"]
     new_character.hair_color = body["hair_color"]
     new_character.eye_color = body["eye_color"]
-    new_character.homeworld_id = body["homeworld_id"]
-    new_character.species_id = body["species_id"]
+    new_character.homeworld_id = int(body["homeworld_id"])
+    new_character.species_id = int(body["species_id"])
 
     db.session.add(new_character)   # getting to saving point
     db.session.commit()     # saves it
@@ -47,8 +46,8 @@ def add_new_species():
     body = request.json
     new_species = Species()
     new_species.name = body["name"]
-    new_species.average_height = body["average_height"]
-    new_species.average_lifespan = body["average_lifespan"]
+    new_species.average_height = int(body["average_height"])
+    new_species.average_lifespan = int(body["average_lifespan"])
     new_species.language = body["language"]
 
     db.session.add(new_species)
@@ -62,7 +61,7 @@ def add_new_planet():
     body = request.json
     new_planet = Planet()
     new_planet.name = body["name"]
-    new_planet.population = body["population"]
+    new_planet.population = int(body["population"])
     
     db.session.add(new_planet)
     db.session.commit()
@@ -95,7 +94,6 @@ def get_single_character(character_id):
     return jsonify(character.serialize())
 
 @api.route('/characters/<int:character_id>', methods=["PUT"])
-@jwt_required()
 def edit_single_character(character_id):
     edited_character = Character.query.get(character_id)
     body = request.json
@@ -123,7 +121,6 @@ def get_single_species(species_id):
     return jsonify(species.serialize())
 
 @api.route('/species/<int:species_id>', methods=["PUT"])
-@jwt_required()
 def edit_single_species(species_id):
     edited_species = Species.query.get(species_id)
     body = request.json
@@ -147,7 +144,6 @@ def get_single_planet(planet_id):
     return jsonify(planet.serialize()) # Giving back what information is requested (we return that planet back to the user)
 
 @api.route('/planets/<int:planet_id>', methods=["PUT"])
-@jwt_required()
 def edit_single_planet(planet_id):
     edited_planet = Planet.query.get(planet_id)
     body = request.json
