@@ -178,13 +178,13 @@ def create_new_user():
 
     return jsonify(new_user.serialize())
 
-@api.route('/log-in', methods=["POST"])
+@api.route('/login', methods=["POST"])
 def log_in_user():
     body = request.json
     user = User.query.filter_by(email=body["email"], password=body["password"]).first()
     if user is None:
         return jsonify({"msg": "user not found / invalid credentials"}), 401
-    access_token = create_access_token(identity=str(user.id))
+    access_token = create_access_token(identity=str(user.id))           # this line is encrypting the user id into a token see around line 292
     return jsonify({"user": user.serialize(), "token": access_token})
 
 
@@ -286,6 +286,11 @@ def remove_favorite_planets():
 
     return jsonify({"favorite_planets": [element.serialize() for element in user.favorite_planets]})
 
-
-
+@api.route('/private', methods=["GET"])
+@jwt_required()
+def token_user_logged():
+    id = get_jwt_identity()         # this line is decrypting the user id from the token see around line 187
+    print(id)
+    user = User.query.get(int(id))       # this line is finding the user by the ID
+    return jsonify(user.serialize()), 200    
 

@@ -42,7 +42,7 @@ export const AddPlanet = () => {
                 onChange={(event) => setPlanetInformation({ ...planetInformation, population: event.target.value })}
                 className="form-control" placeholder="Planet Population" aria-label="Example text with button addon" aria-describedby="button-addon1"
             />
-            <button onClick={addPlanetFetch}>Add Planet</button>
+            <button className="btn btn-primary" onClick={addPlanetFetch}>Add Planet</button>
         </>
     )
 }

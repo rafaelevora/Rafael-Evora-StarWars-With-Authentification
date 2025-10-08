@@ -12,6 +12,9 @@ import { Demo } from "./pages/Demo";
 import { AddCharacter } from "./pages/AddCharacter";
 import { AddPlanet } from "./pages/AddPlanet";
 import { AddSpecies } from "./pages/AddSpecies";
+import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
+import { ProfilePage } from "./pages/ProfilePage";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -31,6 +34,9 @@ export const router = createBrowserRouter(
         <Route path="/addcharacter" element={<AddCharacter />} />
         <Route path="/addplanet" element={<AddPlanet />} />
         <Route path="/addspecies" element={<AddSpecies />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/profilepage" element={<ProfilePage />} />
       </Route>
     )
 );

@@ -16,7 +16,8 @@ export const initialStore=()=>{
 
     characters: [],
     planets: [],
-    species: []
+    species: [],
+    user: null,     /* you can use also user: {} cause it would be an object not an array but null is more functional */
   }
 }
 
@@ -56,6 +57,22 @@ export default function storeReducer(store, action = {}) {
       return {
         ...store,
         species: action.payload
+      }
+
+      case 'set_user':
+
+      return {
+        ...store,
+        user: action.payload
+      }
+
+      case 'log_out_user':
+
+      localStorage.removeItem("authToken")
+
+      return {
+        ...store,
+        user: null
       }
 
     default:

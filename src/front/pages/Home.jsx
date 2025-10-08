@@ -11,7 +11,7 @@ export const Home = () => {
 
 	const loadMessage = async () => {
 		try {
-
+			
 			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
 
 			const response = await fetch(backendUrl + "/api/hello")
