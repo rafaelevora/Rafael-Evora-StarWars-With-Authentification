@@ -109,7 +109,7 @@ def edit_single_character(character_id):
     if "species_id" in body:
         edited_character.species_id = body["species_id"]
     
-    db.session.commit()
+    db.session.commit()             # youre not adding anything so no need for db.session.add()
 
     return jsonify(edited_character.serialize())
 

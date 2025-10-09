@@ -7,14 +7,13 @@ import {
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
 import { Home } from "./pages/Home";
-import { Single } from "./pages/Single";
-import { Demo } from "./pages/Demo";
 import { AddCharacter } from "./pages/AddCharacter";
 import { AddPlanet } from "./pages/AddPlanet";
 import { AddSpecies } from "./pages/AddSpecies";
 import { Login } from "./pages/Login";
 import { Signup } from "./pages/Signup";
 import { ProfilePage } from "./pages/ProfilePage";
+import { HomeCards } from "./pages/HomeCards";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -29,14 +28,13 @@ export const router = createBrowserRouter(
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
         <Route path= "/" element={<Home />} />
-        <Route path="/single/:theId" element={ <Single />} />  {/* Dynamic route for single items */}
-        <Route path="/demo" element={<Demo />} />
         <Route path="/addcharacter" element={<AddCharacter />} />
         <Route path="/addplanet" element={<AddPlanet />} />
         <Route path="/addspecies" element={<AddSpecies />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profilepage" element={<ProfilePage />} />
+        <Route path="/HomeCards" element={<HomeCards />} />
       </Route>
     )
 );

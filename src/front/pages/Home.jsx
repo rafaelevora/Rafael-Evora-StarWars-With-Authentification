@@ -1,93 +1,56 @@
-import React, { useEffect } from "react"
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import useActions from "../hooks/actions.js";
 
 export const Home = () => {
+  const { store, dispatch } = useGlobalReducer();
+  const { getCharacters, getPlanets, getSpecies } = useActions();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [animate, setAnimate] = useState(false);
+  const navigate = useNavigate();
 
-	const { store, dispatch } = useGlobalReducer()
-	const { getCharacters, getPlanets, getSpecies } = useActions();
-	const backendUrl = import.meta.env.VITE_BACKEND_URL
+  useEffect(() => {
+    if (store.characters.length === 0) getCharacters();
+    if (store.planets.length === 0) getPlanets();
+    if (store.species.length === 0) getSpecies();
+  }, []);
 
-	const loadMessage = async () => {
-		try {
-			
-			if (!backendUrl) throw new Error("VITE_BACKEND_URL is not defined in .env file")
+  const handleClick = () => {
+    setAnimate(true);
+    setTimeout(() => navigate("/HomeCards"), 1500); // wait for animation
+  };
 
-			const response = await fetch(backendUrl + "/api/hello")
-			const data = await response.json()
+  return (
+    <div className="text-center position-relative overflow-hidden py-5">
+      {/* Inline CSS inside the component */}
+      <style>{`
+        .star-wars-logo {
+          width: 400px;
+          height: auto;
+          cursor: pointer;
+          transition: all 1.5s ease-in-out;
+          filter: brightness(1);
+        }
+        .star-wars-logo:hover {
+          transform: scale(1.15);
+          filter: brightness(1.8);
+          box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.7);
+        }
+        .star-wars-logo.zoom-out {
+          transform: scale(15);
+          opacity: 0;
+          filter: brightness(2);
+        }
+      `}</style>
 
-			if (response.ok) dispatch({ type: "set_hello", payload: data.message })
-
-			return data
-
-		} catch (error) {
-			if (error.message) throw new Error(
-				`Could not fetch the message from the backend.
-				Please check if the backend is running and the backend port is public.`
-			);
-		}
-
-	}
-
-
-	
-
-	useEffect(() => {
-
-		if (store.characters.length === 0) {
-			getCharacters()
-		}
-		if (store.planets.length === 0) {
-			getPlanets()
-		}
-		if (store.species.length === 0) {
-			getSpecies()
-		}
-
-		loadMessage()
-	}, [])
-
-	return (
-		<div className="text-center mt-5">
-			<h1 className="display-4">Hello Rigo!!</h1>
-			<p className="lead">
-				<img src={rigoImageUrl} className="img-fluid rounded-circle mb-3" alt="Rigo Baby" />
-			</p>
-			<div className="alert alert-info">
-				{store.message ? (
-					<span>{store.message}</span>
-				) : (
-					<span className="text-danger">
-						Loading message from the backend (make sure your python 🐍 backend is running)...
-					</span>
-				)}
-			</div>
-
-			<div>
-				{ store.characters.map((character) => (
-					<h1>{ character.name }</h1>
-				))}
-			</div>
-
-			<div>
-				{ store.planets.map((planet) => (
-					<>
-						<h2>{ planet.name }</h2>
-						<h3>Population: { planet.population }</h3>
-					</>
-				))}
-			</div>
-
-			<div>
-				{ store.species.map((species_name) => (
-					<>
-						<h2>{ species_name.name}</h2>
-						<h3>Language: { species_name.language }</h3>
-					</>
-				))}
-			</div>
-
-		</div>
-	);
-}; 
+      <img
+        src="https://images.seeklogo.com/logo-png/44/2/star-wars-millennium-falcon-logo-png_seeklogo-447501.png"
+        alt="Star Wars Logo"
+        className={`star-wars-logo ${animate ? "zoom-out" : ""}`}
+        onClick={handleClick}
+        title="Click to Start"
+      />
+    </div>
+  );
+};
